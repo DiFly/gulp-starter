@@ -1,4 +1,4 @@
-const { src, dest, series, parallel } = require("gulp");
+const { src, dest, series, parallel, watch } = require("gulp");
 const del = require("del");
 const sass = require("gulp-sass");
 sass.compiler = require("node-sass");
@@ -9,6 +9,7 @@ const babel = require("gulp-babel");
 const uglify = require("gulp-uglify");
 const htmlmin = require("gulp-htmlmin");
 const imagemin = require("gulp-imagemin");
+const browserSync = require("browser-sync").create();
 
 const DIST_FOLDER = "./dist/";
 const SRC_FOLDER = "./src/";
@@ -29,7 +30,14 @@ const path = {
     font: SRC_FOLDER + "font/**/*.{ttf,ttf2}",
     img: SRC_FOLDER + "img/**/*.{jpg,jpeg,png,ico,webp,svg,gif}",
   },
-  watch: {},
+  watch: {
+    html: SRC_FOLDER + "**/*.html",
+    css: SRC_FOLDER + "css/**/*.css",
+    scss: SRC_FOLDER + "scss/**/*.scss",
+    js: SRC_FOLDER + "js/**/*.js",
+    font: SRC_FOLDER + "font/**/*.{ttf,ttf2}",
+    img: SRC_FOLDER + "img/**/*.{jpg,jpeg,png,ico,webp,svg,gif}",
+  },
 };
 
 function clean() {
@@ -106,13 +114,24 @@ function imgToDist() {
 
 function imgMinify() {
   return src(path.build.img + "**/*.{jpg,jpeg,png,ico,webp,svg,gif}")
-    .pipe(imagemin())
+    .pipe(
+      imagemin([
+        imagemin.gifsicle({ interlaced: true }),
+        imagemin.mozjpeg({ quality: 75, progressive: true }),
+        imagemin.optipng({ optimizationLevel: 5 }),
+        imagemin.svgo({
+          plugins: [{ removeViewBox: true }, { cleanupIDs: false }],
+        }),
+      ])
+    )
     .pipe(dest(path.build.img));
 }
 
 function img() {}
 
-function fontToDist() {}
+function fontToDist() {
+  return src(path.src.font).pipe(dest(path.build.font));
+}
 
 function font() {}
 
@@ -120,15 +139,64 @@ function minify() {}
 
 function start() {}
 
-exports.default = clean;
-exports.clean = clean;
-exports.build = series(
+function browsersync() {
+  return browserSync.init({
+    server: {
+      baseDir: DIST_FOLDER,
+    },
+    port: 3000,
+    notify: true,
+  });
+}
+
+function htmlWatch() {
+  return watch(path.watch.html, series(delHtml, htmlToDist)).on(
+    "change",
+    browserSync.reload
+  );
+}
+
+function cssWatch() {
+  return watch(
+    [path.watch.scss, path.watch.css],
+    series(delCss, cssTranspile, cssBundle, cssMinify)
+  ).on("change", browserSync.reload);
+}
+
+function jsWatch() {
+  return watch(
+    path.watch.js,
+    series(delJs, jsTranspile, jsBundle, jsMinify)
+  ).on("change", browserSync.reload);
+}
+
+function delCss() {
+  return del(path.build.css);
+}
+
+function delJs() {
+  return del(path.build.js);
+}
+
+function delHtml() {
+  return del(path.build.html);
+}
+
+let build = series(
   clean,
   parallel(
     series(cssTranspile, cssBundle),
     series(jsTranspile, jsBundle),
     htmlToDist,
+    fontToDist,
     imgToDist
   ),
   parallel(cssMinify, jsMinify, htmlMinify, imgMinify)
 );
+
+let serve = parallel(build, htmlWatch, cssWatch, jsWatch, browsersync);
+
+exports.default = serve;
+exports.serve = serve;
+exports.clean = clean;
+exports.build = build;

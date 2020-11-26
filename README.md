@@ -11,3 +11,4 @@
 [gulp-babel](https://www.npmjs.com/package/gulp-babel) [github](https://github.com/babel/gulp-babel),
 [gulp-htmlmin](https://www.npmjs.com/package/gulp-htmlmin) [github](https://github.com/kangax/html-minifier),
 [gulp-imagemin](https://www.npmjs.com/package/gulp-imagemin) [github](https://github.com/imagemin/imagemin),
+[browser-sync](https://browsersync.io/docs) [npm](https://www.npmjs.com/package/browser-sync) [github](https://github.com/BrowserSync/browser-sync),
