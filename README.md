@@ -12,3 +12,51 @@
 [gulp-htmlmin](https://www.npmjs.com/package/gulp-htmlmin) [github](https://github.com/kangax/html-minifier),
 [gulp-imagemin](https://www.npmjs.com/package/gulp-imagemin) [github](https://github.com/imagemin/imagemin),
 [browser-sync](https://browsersync.io/docs) [npm](https://www.npmjs.com/package/browser-sync) [github](https://github.com/BrowserSync/browser-sync),
+
+### Maybe add
+
+[gulp-autoprefixer](https://www.npmjs.com/package/gulp-autoprefixer),
+[gulp-sourcemaps](https://github.com/gulp-sourcemaps/gulp-sourcemaps),
+[gulp-group-css-media-queries](https://www.npmjs.com/package/gulp-group-css-media-queries),
+[gulp-webp](https://www.npmjs.com/package/gulp-webp),
+[gulp-webp-html](https://www.npmjs.com/package/gulp-webp-html),
+[gulp-webpcss](https://www.npmjs.com/package/gulp-webpcss),
+[gulp-fonter](https://www.npmjs.com/package/gulp-fonter),
+[gulp-ttf2woff](https://www.npmjs.com/package/gulp-ttf2woff),
+[gulp-ttf2woff2](https://www.npmjs.com/package/gulp-ttf2woff2),
+[gulp-svg-sprite](https://www.npmjs.com/package/gulp-svg-sprite)
+
+### Addition information
+
+Adding path to src:
+
+```
+ /*.{jpg, png, svg, gif, ico, webp}
+```
+
+or
+
+```
+/*.+(png|jpg|gif|ico|svg|webp)
+```
+
+Testing support WebP:
+
+```
+function testWebP(callback) {
+var webP = new Image();
+webP.onload = webP.onerror = function () {
+callback(webP.height == 2);
+};
+webP.src = "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA";
+}
+
+testWebP(function (support) {
+
+if (support == true) {
+document.querySelector('body').classList.add('webp');
+}else{
+document.querySelector('body').classList.add('no-webp');
+}
+});
+```
