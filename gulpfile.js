@@ -3,16 +3,22 @@ const del = require("del");
 const sass = require("gulp-sass");
 sass.compiler = require("node-sass");
 const concat = require("gulp-concat");
+const concatCss = require("gulp-concat-css");
 const cleanCSS = require("gulp-clean-css");
+const autoprefixer = require("autoprefixer");
+const cssnano = require("cssnano");
+const postcss = require("gulp-postcss");
+const gcmq = require("gulp-group-css-media-queries");
 const rename = require("gulp-rename");
 const babel = require("gulp-babel");
-const uglify = require("gulp-uglify");
+const uglify = require("gulp-uglify-es").default;
 const htmlmin = require("gulp-htmlmin");
 const imagemin = require("gulp-imagemin");
 const browserSync = require("browser-sync").create();
 
 const DIST_FOLDER = "./dist/";
 const SRC_FOLDER = "./src/";
+const STATIC_FOLDER = "./static/";
 
 const path = {
   build: {
@@ -27,7 +33,7 @@ const path = {
     css: SRC_FOLDER + "css/**/*.css",
     scss: SRC_FOLDER + "scss/**/*.scss",
     js: SRC_FOLDER + "js/**/*.js",
-    font: SRC_FOLDER + "font/**/*.{ttf,ttf2}",
+    font: SRC_FOLDER + "font/**/*.{ttf,ttf2,woff,woff2,otf}",
     img: SRC_FOLDER + "img/**/*.{jpg,jpeg,png,ico,webp,svg,gif}",
   },
   watch: {
@@ -35,9 +41,10 @@ const path = {
     css: SRC_FOLDER + "css/**/*.css",
     scss: SRC_FOLDER + "scss/**/*.scss",
     js: SRC_FOLDER + "js/**/*.js",
-    font: SRC_FOLDER + "font/**/*.{ttf,ttf2}",
+    font: SRC_FOLDER + "font/**/*.{ttf,ttf2,woff,woff2,otf}",
     img: SRC_FOLDER + "img/**/*.{jpg,jpeg,png,ico,webp,svg,gif}",
   },
+  static: STATIC_FOLDER + "**/*",
 };
 
 function clean() {
@@ -45,15 +52,22 @@ function clean() {
 }
 
 function cssTranspile() {
+  let plugins = [
+    autoprefixer({ overrideBrowserslist: ["last 1 version"] }),
+    cssnano(),
+  ];
+
   return src(path.src.scss)
     .pipe(sass().on("error", sass.logError))
     .pipe(src(path.src.css))
+    .pipe(postcss(plugins))
     .pipe(dest(path.build.css));
 }
 
 function cssBundle() {
   return src(path.build.css + "**/*.css")
-    .pipe(concat("style.bundle.css"))
+    .pipe(concatCss("style.bundle.css"))
+    .pipe(gcmq())
     .pipe(dest(path.build.css));
 }
 
@@ -139,6 +153,10 @@ function minify() {}
 
 function start() {}
 
+function addStaticFiles() {
+  return src(path.static).pipe(dest(path.build.html));
+}
+
 function browsersync() {
   return browserSync.init({
     server: {
@@ -191,7 +209,8 @@ let build = series(
     fontToDist,
     imgToDist
   ),
-  parallel(cssMinify, jsMinify, htmlMinify, imgMinify)
+  parallel(cssMinify, jsMinify, htmlMinify, imgMinify),
+  addStaticFiles
 );
 
 let serve = parallel(build, htmlWatch, cssWatch, jsWatch, browsersync);

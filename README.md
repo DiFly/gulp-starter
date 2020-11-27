@@ -8,7 +8,14 @@
 [gulp-concat](https://github.com/gulp-community/gulp-concat),
 [gulp-clean-css](https://github.com/scniro/gulp-clean-css),
 [clean-css](https://github.com/jakubpawlowicz/clean-css#how-to-use-clean-css-api),
+[gulp-concat-css](https://www.npmjs.com/package/gulp-concat-css) [github](https://github.com/mariocasciaro/gulp-concat-css),
+[gulp-postcss](https://github.com/postcss/gulp-postcss),
+[postcss](https://github.com/postcss/postcss),
+[autoprefixer](https://github.com/postcss/autoprefixer),
+[cssnano](https://cssnano.co/) [github](https://github.com/cssnano/cssnano),
+[gulp-group-css-media-queries](https://www.npmjs.com/package/gulp-group-css-media-queries),
 [gulp-babel](https://www.npmjs.com/package/gulp-babel) [github](https://github.com/babel/gulp-babel),
+[gulp-uglify-es](https://www.npmjs.com/package/gulp-uglify-es),
 [gulp-htmlmin](https://www.npmjs.com/package/gulp-htmlmin) [github](https://github.com/kangax/html-minifier),
 [gulp-imagemin](https://www.npmjs.com/package/gulp-imagemin) [github](https://github.com/imagemin/imagemin),
 [browser-sync](https://browsersync.io/docs) [npm](https://www.npmjs.com/package/browser-sync) [github](https://github.com/BrowserSync/browser-sync),
@@ -17,14 +24,15 @@
 
 [gulp-autoprefixer](https://www.npmjs.com/package/gulp-autoprefixer),
 [gulp-sourcemaps](https://github.com/gulp-sourcemaps/gulp-sourcemaps),
-[gulp-group-css-media-queries](https://www.npmjs.com/package/gulp-group-css-media-queries),
 [gulp-webp](https://www.npmjs.com/package/gulp-webp),
 [gulp-webp-html](https://www.npmjs.com/package/gulp-webp-html),
 [gulp-webpcss](https://www.npmjs.com/package/gulp-webpcss),
 [gulp-fonter](https://www.npmjs.com/package/gulp-fonter),
 [gulp-ttf2woff](https://www.npmjs.com/package/gulp-ttf2woff),
 [gulp-ttf2woff2](https://www.npmjs.com/package/gulp-ttf2woff2),
-[gulp-svg-sprite](https://www.npmjs.com/package/gulp-svg-sprite)
+[gulp-svg-sprite](https://www.npmjs.com/package/gulp-svg-sprite),
+[terser](https://www.npmjs.com/package/terser) [github](https://github.com/terser/terser),
+[gulp-terser](https://www.npmjs.com/package/gulp-terser),
 
 ### Addition information
 
