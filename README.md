@@ -1,5 +1,17 @@
 # My simple starter project with gulp
 
+## How work
+
+First, need execute command `git clone GitUrlOfThisProject`. Next, go into folder, and use command `npm install`.
+
+After all packages was instaled, you can use next command to work with project:
+
+- `gulp` or `gulp serve` to start local server with live reload
+- `gulp build` to create build witout starting server (show out files in folder `dist`)
+- `gulp clean` to clean `dist` folder
+
+If you want change tasks or change file path, you can search this functions and const `path` in file `gulpfile.js`.
+
 ### Using libs
 
 [del](https://www.npmjs.com/package/del),
